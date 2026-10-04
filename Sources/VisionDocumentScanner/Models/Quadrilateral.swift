@@ -2,7 +2,7 @@ import Foundation
 import CoreGraphics
 
 /// Represents a four-sided polygon defining document boundaries in 2D space.
-public struct Quadrilateral: Sendable, Hashable, Codable {
+public struct Quadrilateral: Sendable, Equatable, Hashable, Codable {
     public var topLeft: CGPoint
     public var topRight: CGPoint
     public var bottomRight: CGPoint
@@ -18,6 +18,24 @@ public struct Quadrilateral: Sendable, Hashable, Codable {
         self.topRight = topRight
         self.bottomRight = bottomRight
         self.bottomLeft = bottomLeft
+    }
+
+    public static func == (lhs: Quadrilateral, rhs: Quadrilateral) -> Bool {
+        lhs.topLeft == rhs.topLeft &&
+        lhs.topRight == rhs.topRight &&
+        lhs.bottomRight == rhs.bottomRight &&
+        lhs.bottomLeft == rhs.bottomLeft
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(topLeft.x)
+        hasher.combine(topLeft.y)
+        hasher.combine(topRight.x)
+        hasher.combine(topRight.y)
+        hasher.combine(bottomRight.x)
+        hasher.combine(bottomRight.y)
+        hasher.combine(bottomLeft.x)
+        hasher.combine(bottomLeft.y)
     }
 
     /// Array of all 4 corners in clockwise order starting from top-left.
